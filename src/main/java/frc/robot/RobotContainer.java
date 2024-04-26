@@ -6,19 +6,13 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.ControllerConstants;
-import frc.robot.Constants.ControllerConstants.Button;
-import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.LightAndHornConstants;
 import frc.robot.commands.LEDs.LEDCommand;
 import frc.robot.commands.drive.DefaultDriveCommand;
 import frc.robot.commands.hornAndLight.HornCommand;
-import frc.robot.subsystems.ArduinoSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LightAndHornSubsystem;
 import frc.robot.subsystems.ArduinoSubsystem.StatusCode;
@@ -26,7 +20,6 @@ import frc.robot.subsystems.ArduinoSubsystem.StatusCode;
 public class RobotContainer {
 	private DriveSubsystem m_driveSubsystem = new DriveSubsystem();
 	private LightAndHornSubsystem m_lightAndHornSubsystem = new LightAndHornSubsystem();
-	
 
 	private final Joystick m_Controller = new Joystick(ControllerConstants.kDriverControllerPort);
 
@@ -48,7 +41,7 @@ public class RobotContainer {
 
 		new POVButton(m_Controller, ControllerConstants.DPad.kUp)
 				.onTrue(new LEDCommand(StatusCode.RAINBOW_PARTY_FUN_TIME));
-				
+
 		new POVButton(m_Controller, ControllerConstants.DPad.kDown)
 				.onTrue(new LEDCommand(StatusCode.DEFAULT));
 
