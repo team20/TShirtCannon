@@ -69,8 +69,11 @@ public final class Constants {
 
 		// TODO re-evaluate current limits
 		public static final int kSmartCurrentLimit = 55;
-		public static final double kPeakCurrentLimit = 65;
+		public static final int kPeakCurrentLimit = 65;
 		public static final int kPeakCurrentDurationMillis = 0;
+
+		public static final double kTurningMultiplier = 0.5;
+		public static final double kSpeedLimitFactor = 0.5;
 
 	}
 
