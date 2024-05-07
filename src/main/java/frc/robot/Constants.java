@@ -44,13 +44,6 @@ public final class Constants {
 			public static final int kPS = 13;
 			public static final int kTrackpad = 14;
 		}
-
-		public static final class DPad {
-			public static final int kUp = 0;
-			public static final int kRight = 90;
-			public static final int kDown = 180;
-			public static final int kLeft = 270;
-		}
 	}
 
 	public static final class DriveConstants {
@@ -71,18 +64,13 @@ public final class Constants {
 
 		public static final double kTurningMultiplier = 0.5;
 		public static final double kSpeedLimitFactor = 0.5;
-
 	}
 
-	public static final class PneumaticsConstants{
+	public static final class PneumaticsConstants {
 		public static final int hubID = 1000;
-
 	}
 
-	public static final class LightAndHornConstants{
-		public static final int hornID = 2000;
-		public static final int lightID = 2001;
-		
+	public static final class LightAndHornConstants {
+		public static final int kRelayPort = 0;
 	}
-
 }

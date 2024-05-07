@@ -1,21 +1,23 @@
 package frc.robot.subsystems;
 
+import java.util.function.Supplier;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
-	private static DriveSubsystem s_subsystem;
-
 	private final TalonSRX m_frontLeft = new TalonSRX(DriveConstants.kFrontLeftID);
 	private final TalonSRX m_frontRight = new TalonSRX(DriveConstants.kFrontRightID);
 	private final TalonSRX m_backLeft = new TalonSRX(DriveConstants.kBackLeftID);
 	private final TalonSRX m_backRight = new TalonSRX(DriveConstants.kBackRightID);
 
 	public DriveSubsystem() {
-		s_subsystem = this;
 		m_frontLeft.setInverted(DriveConstants.kFrontLeftInvert);
 		m_frontLeft.configPeakCurrentLimit(DriveConstants.kPeakCurrentLimit);
 		m_frontRight.setInverted(DriveConstants.kFrontLeftInvert);
@@ -26,15 +28,8 @@ public class DriveSubsystem extends SubsystemBase {
 		m_backRight.configPeakCurrentLimit(DriveConstants.kPeakCurrentLimit);
 	}
 
-	public static DriveSubsystem get() {
-		return s_subsystem;
-	}
-
 	public void periodic() {
-		
 	}
-
-	
 
 	public void arcadeDrive(double straight, double left, double right) {
 		tankDrive(DriveConstants.kSpeedLimitFactor * (straight - left + right),
@@ -58,6 +53,17 @@ public class DriveSubsystem extends SubsystemBase {
 		m_backRight.set(ControlMode.PercentOutput, rightSpeed);
 	}
 
-	
-
+	public Command drive(Supplier<Double> fwdSpeed, Supplier<Double> leftSpeed, Supplier<Double> rightSpeed) {
+		return run(() -> {
+			// Apply deadbands to controller input so it doesn't move while the controller
+			// isn't touched
+			double speedStraight = MathUtil.applyDeadband(fwdSpeed.get(), ControllerConstants.kDeadzone);
+			double speedLeft = MathUtil.applyDeadband(leftSpeed.get(), ControllerConstants.kTriggerDeadzone);
+			double speedRight = MathUtil.applyDeadband(rightSpeed.get(), ControllerConstants.kTriggerDeadzone);
+			// Full turn speed is difficult to control, so we slow it down
+			speedLeft *= DriveConstants.kTurningMultiplier;
+			speedRight *= DriveConstants.kTurningMultiplier;
+			arcadeDrive(speedStraight, speedLeft, speedRight);
+		});
+	}
 }
