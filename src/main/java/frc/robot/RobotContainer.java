@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.drive.DefaultDriveCommand;
-import frc.robot.commands.hornAndLight.HornCommand;
 import frc.robot.subsystems.ArduinoSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LightAndHornSubsystem;
@@ -52,7 +52,14 @@ public class RobotContainer {
 
 		// ------------Horning----------------
 		new JoystickButton(m_Controller, ControllerConstants.Button.kTrackpad)
-				.whileTrue(new HornCommand(m_lightAndHornSubsystem));
+				.whileTrue(m_lightAndHornSubsystem.horn());
+
+		// -------------Lights-------------
+		RobotModeTriggers.disabled().negate().onTrue(m_lightAndHornSubsystem.lightReverseSpin());
+		new JoystickButton(m_Controller, ControllerConstants.Button.kCircle)
+				.whileTrue(m_lightAndHornSubsystem.lightSpin());
+		new JoystickButton(m_Controller, ControllerConstants.Button.kSquare)
+				.whileTrue(m_lightAndHornSubsystem.lightReverseSpin());
 
 	}
 

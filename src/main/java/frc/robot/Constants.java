@@ -30,7 +30,7 @@ public final class Constants {
 			public static final int kDown = 180;
 			public static final int kLeft = 270;
 		}
-		
+
 		public static final class Button {
 			/** Left middle button */
 			public static final int kSquare = 1;
@@ -72,7 +72,6 @@ public final class Constants {
 		public static final double kTurningMultiplier = 0.5;
 		public static final double kSpeedLimitFactor = 0.5;
 
-
 	}
 
 	public static final class PneumaticsConstants {
@@ -80,6 +79,7 @@ public final class Constants {
 	}
 
 	public static final class LightAndHornConstants {
-		public static final int kRelayPort = 0;
+		public static final int kHornPort = 0;
+		public static final int kLightPort = 1;
 	}
 }
