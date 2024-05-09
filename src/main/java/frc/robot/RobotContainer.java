@@ -60,7 +60,7 @@ public class RobotContainer {
 				.whileTrue(m_lightAndHornSubsystem.lightSpin());
 		new JoystickButton(m_Controller, ControllerConstants.Button.kSquare)
 				.whileTrue(m_lightAndHornSubsystem.lightReverseSpin());
-
+		new JoystickButton(m_Controller, ControllerConstants.Button.kX).whileTrue(m_lightAndHornSubsystem.lightOff());
 	}
 
 	// TODO get auto command from auto chooser
