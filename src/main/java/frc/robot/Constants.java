@@ -24,6 +24,13 @@ public final class Constants {
 			public static final int kRightY = 5;
 		}
 
+		public static final class DPad {
+			public static final int kUp = 0;
+			public static final int kRight = 90;
+			public static final int kDown = 180;
+			public static final int kLeft = 270;
+		}
+		
 		public static final class Button {
 			/** Left middle button */
 			public static final int kSquare = 1;
@@ -43,13 +50,6 @@ public final class Constants {
 			public static final int kRightStick = 12;
 			public static final int kPS = 13;
 			public static final int kTrackpad = 14;
-		}
-
-		public static final class DPad {
-			public static final int kUp = 0;
-			public static final int kRight = 90;
-			public static final int kDown = 180;
-			public static final int kLeft = 270;
 		}
 	}
 
@@ -75,16 +75,11 @@ public final class Constants {
 
 	}
 
-	public static final class PneumaticsConstants{
+	public static final class PneumaticsConstants {
 		public static final int hubID = 1000;
-
-
 	}
 
-	public static final class LightAndHornConstants{
-		public static final int hornID = 0;
-		public static final int lightID = 3;
-		
+	public static final class LightAndHornConstants {
+		public static final int kRelayPort = 0;
 	}
-
 }

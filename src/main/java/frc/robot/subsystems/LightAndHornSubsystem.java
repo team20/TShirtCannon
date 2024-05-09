@@ -7,8 +7,8 @@ import frc.robot.Constants.LightAndHornConstants;
 
 public class LightAndHornSubsystem extends SubsystemBase {
     
-    Relay hornRelay = new Relay(LightAndHornConstants.hornID);
-    Relay lightRelay = new Relay(LightAndHornConstants.lightID);
+    Relay hornRelay = new Relay(LightAndHornConstants.kRelayPort);
+    Relay lightRelay = new Relay(LightAndHornConstants.kRelayPort);
 
     public LightAndHornSubsystem(){
         lightOn();
