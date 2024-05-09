@@ -3,8 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
@@ -34,6 +33,10 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	public void periodic() {
+		SmartDashboard.putNumber("Back Right", m_backRight.getSupplyCurrent());
+		SmartDashboard.putNumber("Back Left", m_backLeft.getSupplyCurrent());
+		SmartDashboard.putNumber("Front Right", m_frontRight.getSupplyCurrent());
+		SmartDashboard.putNumber("Front Left", m_frontLeft.getSupplyCurrent());
 	}
 
 	
@@ -57,6 +60,7 @@ public class DriveSubsystem extends SubsystemBase {
 		m_frontLeft.set(ControlMode.PercentOutput, leftSpeed);
 		m_frontRight.set(ControlMode.PercentOutput, rightSpeed);
 		m_backRight.set(ControlMode.PercentOutput, rightSpeed);
+		m_backLeft.set(ControlMode.PercentOutput, leftSpeed);
 	}
 
 	
