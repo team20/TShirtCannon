@@ -33,21 +33,21 @@ public class RobotContainer {
 
 		// -------------LED signaling-------------
 
-		new POVButton(m_Controller, ControllerConstants.DPad.kLeft)
-				.onTrue(new LEDCommand(StatusCode.BLINKING_PURPLE));
+		// new POVButton(m_Controller, ControllerConstants.DPad.kLeft)
+		// 		.onTrue(new LEDCommand(StatusCode.BLINKING_PURPLE));
 
-		new POVButton(m_Controller, ControllerConstants.DPad.kRight)
-				.onTrue(new LEDCommand(StatusCode.BLINKING_YELLOW));
+		// new POVButton(m_Controller, ControllerConstants.DPad.kRight)
+		// 		.onTrue(new LEDCommand(StatusCode.BLINKING_YELLOW));
 
-		new POVButton(m_Controller, ControllerConstants.DPad.kUp)
-				.onTrue(new LEDCommand(StatusCode.RAINBOW_PARTY_FUN_TIME));
+		// new POVButton(m_Controller, ControllerConstants.DPad.kUp)
+		// 		.onTrue(new LEDCommand(StatusCode.RAINBOW_PARTY_FUN_TIME));
 
-		new POVButton(m_Controller, ControllerConstants.DPad.kDown)
-				.onTrue(new LEDCommand(StatusCode.DEFAULT));
+		// new POVButton(m_Controller, ControllerConstants.DPad.kDown)
+		// 		.onTrue(new LEDCommand(StatusCode.DEFAULT));
 
 		// -------------Driving -------------
 		m_driveSubsystem.setDefaultCommand(new DefaultDriveCommand(
-				() -> -m_Controller.getRawAxis(ControllerConstants.Axis.kLeftY),
+				() -> m_Controller.getRawAxis(ControllerConstants.Axis.kLeftY),
 				() -> m_Controller.getRawAxis(ControllerConstants.Axis.kLeftTrigger),
 				() -> m_Controller.getRawAxis(ControllerConstants.Axis.kRightTrigger)));
 

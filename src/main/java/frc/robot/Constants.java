@@ -54,15 +54,15 @@ public final class Constants {
 	}
 
 	public static final class DriveConstants {
-		public static final int kFrontLeftID = 2;
+		public static final int kFrontLeftID = 3;
 		public static final boolean kFrontLeftInvert = false;
 		public static final int kBackLeftID = 4;
 		public static final boolean kBackLeftOppose = false;
 
-		public static final int kFrontRightID = 3;
+		public static final int kFrontRightID = 1;
 		public static final boolean kFrontRightInvert = true;
-		public static final int kBackRightID = 5;
-		public static final boolean kBackRightOppose = false;
+		public static final int kBackRightID = 2;
+		public static final boolean kBackRightInvert = true;
 
 		// TODO re-evaluate current limits
 		public static final int kSmartCurrentLimit = 55;
@@ -80,8 +80,8 @@ public final class Constants {
 	}
 
 	public static final class LightAndHornConstants{
-		public static final int hornID = 2000;
-		public static final int lightID = 2001;
+		public static final int hornID = 0;
+		public static final int lightID = 3;
 		
 	}
 
