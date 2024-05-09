@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.drive.DefaultDriveCommand;
 import frc.robot.subsystems.ArduinoSubsystem;
+import frc.robot.subsystems.CannonSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LightAndHornSubsystem;
 
@@ -19,7 +20,7 @@ public class RobotContainer {
 	private ArduinoSubsystem m_arduinoSubsystem = new ArduinoSubsystem();
 	private DriveSubsystem m_driveSubsystem = new DriveSubsystem();
 	private LightAndHornSubsystem m_lightAndHornSubsystem = new LightAndHornSubsystem();
-
+	private CannonSubsystem m_cannonSubsystem = new CannonSubsystem();
 	private final Joystick m_Controller = new Joystick(ControllerConstants.kDriverControllerPort);
 
 	private final SendableChooser<Command> m_autoChooser = new SendableChooser<>();
@@ -61,6 +62,8 @@ public class RobotContainer {
 		new JoystickButton(m_Controller, ControllerConstants.Button.kSquare)
 				.whileTrue(m_lightAndHornSubsystem.lightReverseSpin());
 		new JoystickButton(m_Controller, ControllerConstants.Button.kX).whileTrue(m_lightAndHornSubsystem.lightOff());
+		// Pneumatics
+		new JoystickButton(m_Controller, ControllerConstants.Button.kTriangle).whileTrue(m_cannonSubsystem.fire());
 	}
 
 	// TODO get auto command from auto chooser
