@@ -50,7 +50,7 @@ public class ArduinoSubsystem extends SubsystemBase {
 		i2c.writeBulk(m_statusCode);
 	}
 
-	public Command writeStatus(StatusCode code) {
+	public Command ledColor(StatusCode code) {
 		return runOnce(() -> setCode(code));
 	}
 }
