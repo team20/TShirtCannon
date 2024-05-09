@@ -14,15 +14,39 @@ public class LightAndHornSubsystem extends SubsystemBase {
 	public LightAndHornSubsystem() {
 	}
 
+	/**
+	 * Creates a command to turn the horn on, then off.
+	 * 
+	 * @return The command.
+	 */
 	public Command horn() {
 		return runEnd(() -> horn.set(Value.kOn), () -> horn.set(Value.kOff));
 	}
 
+	/**
+	 * Creates a command to turn on the light and spin it.
+	 * 
+	 * @return The command.
+	 */
 	public Command lightSpin() {
 		return run(() -> light.set(Value.kForward));
 	}
 
+	/**
+	 * Creates a command to turn on the light and spin it the opposite direction.
+	 * 
+	 * @return The command.
+	 */
 	public Command lightReverseSpin() {
 		return run(() -> light.set(Value.kReverse));
+	}
+
+	/**
+	 * Creates a command to turn off the light.
+	 * 
+	 * @return The command.
+	 */
+	public Command lightOff() {
+		return runOnce(() -> light.set(Value.kOff));
 	}
 }
