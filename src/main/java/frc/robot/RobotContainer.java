@@ -7,25 +7,22 @@ package frc.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.ControllerConstants.Axis;
 import frc.robot.Constants.ControllerConstants.Button;
-import frc.robot.commands.drive.DefaultDriveCommand;
 import frc.robot.subsystems.ArduinoSubsystem;
+import frc.robot.subsystems.ArduinoSubsystem.StatusCode;
 import frc.robot.subsystems.CannonSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LightAndHornSubsystem;
-import frc.robot.subsystems.ArduinoSubsystem.StatusCode;
 
 public class RobotContainer {
-	private ArduinoSubsystem m_arduinoSubsystem = new ArduinoSubsystem();
-	private DriveSubsystem m_driveSubsystem = new DriveSubsystem();
-	private LightAndHornSubsystem m_lightAndHornSubsystem = new LightAndHornSubsystem();
-	private CannonSubsystem m_cannonSubsystem = new CannonSubsystem();
+	private final ArduinoSubsystem m_arduinoSubsystem = new ArduinoSubsystem();
+	private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
+	private final LightAndHornSubsystem m_lightAndHornSubsystem = new LightAndHornSubsystem();
+	private final CannonSubsystem m_cannonSubsystem = new CannonSubsystem();
 	private final CommandGenericHID m_controller = new CommandGenericHID(ControllerConstants.kDriverControllerPort);
-
 	private final SendableChooser<Command> m_autoChooser = new SendableChooser<>();
 
 	public RobotContainer() {
@@ -40,7 +37,7 @@ public class RobotContainer {
 		m_controller.povDown().onTrue(m_arduinoSubsystem.ledColor(StatusCode.DEFAULT));
 
 		// -------------Driving -------------
-		m_driveSubsystem.setDefaultCommand(new DefaultDriveCommand(
+		m_driveSubsystem.setDefaultCommand(m_driveSubsystem.drive(
 				() -> m_controller.getRawAxis(Axis.kLeftY),
 				() -> m_controller.getRawAxis(Axis.kLeftTrigger),
 				() -> m_controller.getRawAxis(Axis.kRightTrigger)));

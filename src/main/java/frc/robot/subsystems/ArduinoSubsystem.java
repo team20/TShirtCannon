@@ -41,11 +41,6 @@ public class ArduinoSubsystem extends SubsystemBase {
 		setCode(StatusCode.DEFAULT);
 	}
 
-	// This method will be called once per scheduler run
-	@Override
-	public void periodic() {
-	}
-
 	public void setCode(StatusCode code) {
 		i2c.writeBulk(m_statusCode);
 	}

@@ -75,7 +75,7 @@ public final class Constants {
 	}
 
 	public static final class PneumaticsConstants {
-		public static final int hubID = 1000;
+		public static final int kHubID = 1;
 	}
 
 	public static final class LightAndHornConstants {

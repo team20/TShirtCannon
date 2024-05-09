@@ -4,41 +4,32 @@
 
 package frc.robot.subsystems;
 
+import static frc.robot.Constants.PneumaticsConstants.*;
+
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CannonSubsystem extends SubsystemBase {
-  private final PneumaticHub m_hub = new PneumaticHub();
-  private final Solenoid m_solenoid0 = m_hub.makeSolenoid(0);
-  private final Solenoid m_solenoid1 = m_hub.makeSolenoid(1);
-  private final Solenoid m_leftCannon = m_hub.makeSolenoid(2);
-  private final Solenoid m_solenoid3 = m_hub.makeSolenoid(3);
-  private final Solenoid m_solenoid5 = m_hub.makeSolenoid(5);
+	private final PneumaticHub m_hub = new PneumaticHub(kHubID);
+	private final Solenoid m_rightCannon = m_hub.makeSolenoid(0);
+	private final Solenoid m_middleCannon = m_hub.makeSolenoid(1);
+	private final Solenoid m_leftCannon = m_hub.makeSolenoid(2);
 
-  /** Creates a new CannonSubsystem. */
-  public CannonSubsystem() {
-  }
+	/** Creates a new CannonSubsystem. */
+	public CannonSubsystem() {
+	}
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
-
-  public Command fire() {
-    return runEnd(() -> {
-      // m_solenoid0.set(true);
-      // m_solenoid1.set(true);
-      m_leftCannon.set(true);
-      // m_solenoid3.set(true);
-      // m_solenoid5.set(true);
-    }, () -> {
-      // m_solenoid0.set(false);
-      // m_solenoid1.set(false);
-      m_leftCannon.set(false);
-      // m_solenoid3.set(false);
-      // m_solenoid5.set(false);
-    });
-  }
+	public Command fire() {
+		return runEnd(() -> {
+			m_rightCannon.set(true);
+			m_middleCannon.set(true);
+			m_leftCannon.set(true);
+		}, () -> {
+			m_rightCannon.set(false);
+			m_middleCannon.set(false);
+			m_leftCannon.set(false);
+		});
+	}
 }
