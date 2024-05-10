@@ -22,11 +22,11 @@ public class ArduinoSubsystem extends SubsystemBase {
 	/** The bytes that control the LED mode */
 	public enum StatusCode {
 		RESET((byte) 8),
-		BLINKING_YELLOW((byte) 9),
-		BLINKING_PURPLE((byte) 10),
-		MOVING_GREEN_AND_RED_GRADIENT((byte) 11),
-		MOVING_GREEN_AND_BLUE_GRADIENT((byte) 12),
-		RAINBOW_PARTY_FUN_TIME((byte) 16),
+		RAINBOW_PARTY_FUN_TIME((byte) 1),
+		SMOOTH_RAINBOW_PARTY_FUN_TIME((byte) 2),
+		BLINKING_YELLOW((byte) 3),
+		BLINKING_PURPLE((byte) 4),
+		SHEN_COLORS((byte) 5),
 		DEFAULT((byte) 20);
 
 		public byte code;
