@@ -49,7 +49,7 @@ uint32_t color(int r, int g, int b) {
 // frame variable, changes from loop
 int colorIndex = 0;
 // pattern led strips are on, read in from master/robot
-int pattern = 9;
+int pattern = 2;
 uint32_t teamColor = color(0, 255, 0);
 uint32_t noteColor = color(255, 77, 0);
 uint32_t offColor = color(0, 0, 0);
@@ -87,7 +87,7 @@ void loop() {
 			delay(75);
 			break;
 		case 2:  // Smooth RainbowPartyFunTime
-			strip.rainbow((65535 / LED_COUNT) * (colorIndex % LED_COUNT), 3);
+			strip.rainbow((65535 / (LED_COUNT / 6)) * (colorIndex % (LED_COUNT / 6)), 6);
 			break;
 		case 3:  // yellow -> Coop LED (HP Command)
 			for (int i = 0; i < LED_COUNT; i++) {
@@ -103,7 +103,7 @@ void loop() {
 			break;
 		case 5:  // Shen colors
 			for (int i = 0; i < LED_COUNT; i++) {
-				strip.setPixelColor(i, TheaterLights(colorIndex, color(0, 255, 0), color(255, 255, 255)));
+				strip.setPixelColor(i, TheaterLights(colorIndex, i, color(0, 255, 0), color(255, 255, 255)));
 			}
 			delay(100);
 			break;
