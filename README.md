@@ -10,21 +10,22 @@ Firing the cannons requires the left bumper to be held down to prevent accidenta
 
 Press and hold the touchpad to turn on the horn, release to turn it off.
 
-| Controls                                                                | Action                  |
-| ----------------------------------------------------------------------- | ----------------------- |
-| [**Drive Controls**](./src/main/java/frc/robot/RobotContainer.java#L39) |                         |
-| Left Trigger                                                            | Spin left               |
-| Right Trigger                                                           | Spin right              |
-| Left Joystick                                                           | Drive forward/backward  |
-| [**Cannon Controls**](./src/main/java/frc/robot/RobotContainer.java#48) |                         |
-| DPad Down                                                               | Charge cannon to 20 PSI |
-| DPad Right                                                              | Charge cannon to 40 PSI |
-| DPad Up                                                                 | Charge cannon to 60 PSI |
-| Left Bumper + Square                                                    | Fire left cannon        |
-| Left Bumper + Triangle                                                  | Fire middle cannon      |
-| Left Bumper + Circle                                                    | Fire right cannon       |
-| [**Horn Controls**](./src/main/java/frc/robot/RobotContainer.java#L45)  |                         |
-| Touchpad (hold)                                                         | Turn on the horn        |
+| Controls                                                                 | Action                   |
+| ------------------------------------------------------------------------ | ------------------------ |
+| [**Drive Controls**](./src/main/java/frc/robot/RobotContainer.java#L39)  |                          |
+| Left Trigger                                                             | Spin left                |
+| Right Trigger                                                            | Spin right               |
+| Left Joystick                                                            | Drive forward/backward   |
+| [**Cannon Controls**](./src/main/java/frc/robot/RobotContainer.java#L48) |                          |
+| DPad Down                                                                | Charge cannons to 20 PSI |
+| DPad Right                                                               | Charge cannons to 40 PSI |
+| DPad Up                                                                  | Charge cannons to 60 PSI |
+| Left Bumper + Square                                                     | Fire left cannon         |
+| Left Bumper + Triangle                                                   | Fire middle cannon       |
+| Left Bumper + Circle                                                     | Fire right cannon        |
+| Left Bumper + X                                                          | Fire all cannons         |
+| [**Horn Controls**](./src/main/java/frc/robot/RobotContainer.java#L45)   |                          |
+| Touchpad (hold)                                                          | Turn on the horn         |
 
 ## The cannon
 
@@ -44,7 +45,7 @@ The [commands](./src/main/java/frc/robot/subsystems/CannonSubsystem.java#L89) th
 
 ## The horn and light
 
-The horn and light are each controlled by one [VEX Relay](https://web.archive.org/web/20030419143006/http://www.innovationfirst.com/FirstRobotics/pdfs/SpikeBLUEUsersManual.pdf) (connected to the Relay ports).
+The horn and light are each controlled by a [VEX Relay](https://web.archive.org/web/20030419143006/http://www.innovationfirst.com/FirstRobotics/pdfs/SpikeBLUEUsersManual.pdf) (connected to the Relay ports).
 
 The horn is honked by setting the relay to `kOn`. The [command](./src/main/java/frc/robot/subsystems/LightAndHornSubsystem.java#L22) that does this then also sets the relay to `kOff` to turn off the horn when the command ends. The [button binding](./src/main/java/frc/robot/RobotContainer.java#L46) is hold to run, so the command ends and the horn turns off when the button is released.
 
