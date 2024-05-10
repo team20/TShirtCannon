@@ -31,10 +31,10 @@ public class RobotContainer {
 
 	private void configureButtonBindings() {
 		// -------------LED signaling-------------
-		m_controller.povLeft().onTrue(m_arduinoSubsystem.ledColor(StatusCode.BLINKING_PURPLE));
-		m_controller.povRight().onTrue(m_arduinoSubsystem.ledColor(StatusCode.BLINKING_YELLOW));
-		m_controller.povUp().onTrue(m_arduinoSubsystem.ledColor(StatusCode.RAINBOW_PARTY_FUN_TIME));
-		m_controller.povDown().onTrue(m_arduinoSubsystem.ledColor(StatusCode.DEFAULT));
+		// m_controller.povLeft().onTrue(m_arduinoSubsystem.ledColor(StatusCode.BLINKING_PURPLE));
+		// m_controller.povRight().onTrue(m_arduinoSubsystem.ledColor(StatusCode.BLINKING_YELLOW));
+		// m_controller.povUp().onTrue(m_arduinoSubsystem.ledColor(StatusCode.RAINBOW_PARTY_FUN_TIME));
+		// m_controller.povDown().onTrue(m_arduinoSubsystem.ledColor(StatusCode.DEFAULT));
 
 		// -------------Driving -------------
 		m_driveSubsystem.setDefaultCommand(m_driveSubsystem.drive(
@@ -47,11 +47,18 @@ public class RobotContainer {
 
 		// -------------Lights-------------
 		RobotModeTriggers.disabled().negate().onTrue(m_lightAndHornSubsystem.lightReverseSpin());
-		m_controller.button(Button.kCircle).whileTrue(m_lightAndHornSubsystem.lightSpin());
-		m_controller.button(Button.kSquare).whileTrue(m_lightAndHornSubsystem.lightReverseSpin());
-		m_controller.button(Button.kX).whileTrue(m_lightAndHornSubsystem.lightOff());
+		m_controller.button(Button.kShare).whileTrue(m_lightAndHornSubsystem.lightSpin());
+		m_controller.button(Button.kOptions).whileTrue(m_lightAndHornSubsystem.lightReverseSpin());
 		// Pneumatics
-		m_controller.button(Button.kTriangle).whileTrue(m_cannonSubsystem.fire());
+		m_controller.povDown().onTrue(m_cannonSubsystem.charge(20));
+		m_controller.povRight().onTrue(m_cannonSubsystem.charge(40));
+		m_controller.povUp().onTrue(m_cannonSubsystem.charge(60));
+		m_controller.button(Button.kLeftBumper).and(m_controller.button(Button.kSquare))
+				.whileTrue(m_cannonSubsystem.fireLeftCannon());
+		m_controller.button(Button.kLeftBumper).and(m_controller.button(Button.kTriangle))
+				.whileTrue(m_cannonSubsystem.fireMiddleCannon());
+		m_controller.button(Button.kLeftBumper).and(m_controller.button(Button.kCircle))
+				.whileTrue(m_cannonSubsystem.fireRightCannon());
 	}
 
 	// TODO get auto command from auto chooser

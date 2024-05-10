@@ -74,8 +74,13 @@ public final class Constants {
 
 	}
 
-	public static final class PneumaticsConstants {
+	public static final class CannonConstants {
 		public static final int kHubID = 1;
+		/**
+		 * At 0 PSI, the analog pressure sensor reads ~0.47 volts. At 45 PSI, the analog
+		 * pressure sensor reads 1.37 volts.
+		 */
+		public static final double kPsiPerVolt = 45 / (1.37 - 0.47);
 	}
 
 	public static final class LightAndHornConstants {
