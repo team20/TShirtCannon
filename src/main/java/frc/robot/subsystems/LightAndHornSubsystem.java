@@ -28,7 +28,7 @@ public class LightAndHornSubsystem extends SubsystemBase {
 	 * 
 	 * @return The command.
 	 */
-	public Command lightSpin() {
+	public Command spinLight() {
 		return run(() -> light.set(Value.kForward));
 	}
 
@@ -37,7 +37,7 @@ public class LightAndHornSubsystem extends SubsystemBase {
 	 * 
 	 * @return The command.
 	 */
-	public Command lightReverseSpin() {
+	public Command spinLightReverse() {
 		return run(() -> light.set(Value.kReverse));
 	}
 
@@ -46,7 +46,7 @@ public class LightAndHornSubsystem extends SubsystemBase {
 	 * 
 	 * @return The command.
 	 */
-	public Command lightOff() {
+	public Command disableLight() {
 		return runOnce(() -> light.set(Value.kOff));
 	}
 }

@@ -28,25 +28,40 @@ public class CannonSubsystem extends SubsystemBase {
 	}
 
 	private double getLeftCannonPressure() {
+		// Subtract 0.47 volts to normalize the voltage to 0 to represent 0 PSI and
+		// multiply by 50 PSI/volt to get cannon PSI.
 		return (m_leftCannonPressure.getVoltage() - 0.47) * kPsiPerVolt;
 	}
 
 	private double getMiddleCannonPressure() {
+		// Subtract 0.47 volts to normalize the voltage to 0 to represent 0 PSI and
+		// multiply by 50 PSI/volt to get cannon PSI.
 		return (m_middleCannonPressure.getVoltage() - 0.47) * kPsiPerVolt;
 	}
 
 	private double getRightCannonPressure() {
+		// Subtract 0.47 volts to normalize the voltage to 0 to represent 0 PSI and
+		// multiply by 50 PSI/volt to get cannon PSI.
 		return (m_rightCannonPressure.getVoltage() - 0.47) * kPsiPerVolt;
 	}
 
 	@Override
 	public void periodic() {
-		SmartDashboard.putNumber("Left Cannon Pressure", m_leftCannonPressure.getVoltage());
-		SmartDashboard.putNumber("Middle Cannon Pressure", m_middleCannonPressure.getVoltage());
-		SmartDashboard.putNumber("Right Cannon Pressure", m_rightCannonPressure.getVoltage());
+		SmartDashboard.putNumber("Left Cannon Voltage", m_leftCannonPressure.getVoltage());
+		SmartDashboard.putNumber("Middle Cannon Voltage", m_middleCannonPressure.getVoltage());
+		SmartDashboard.putNumber("Right Cannon Voltage", m_rightCannonPressure.getVoltage());
+		SmartDashboard.putNumber("Left Cannon Pressure", getLeftCannonPressure());
+		SmartDashboard.putNumber("Middle Cannon Pressure", getMiddleCannonPressure());
+		SmartDashboard.putNumber("Right Cannon Pressure", getRightCannonPressure());
 	}
 
-	public Command charge(int psi) {
+	/**
+	 * Creates a command to charge the all the cannons to the target PSI.
+	 * 
+	 * @param psi The target PSI.
+	 * @return The command.
+	 */
+	public Command chargeCannon(int psi) {
 		return runEnd(() -> {
 			if (getLeftCannonPressure() < psi) {
 				m_leftCannon.set(Value.kReverse);

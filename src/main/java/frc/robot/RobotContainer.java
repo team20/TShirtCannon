@@ -45,20 +45,21 @@ public class RobotContainer {
 		// ------------Horning----------------
 		m_controller.button(Button.kTrackpad).whileTrue(m_lightAndHornSubsystem.horn());
 
-		// -------------Lights-------------
-		RobotModeTriggers.disabled().negate().onTrue(m_lightAndHornSubsystem.lightReverseSpin());
-		m_controller.button(Button.kShare).whileTrue(m_lightAndHornSubsystem.lightSpin());
-		m_controller.button(Button.kOptions).whileTrue(m_lightAndHornSubsystem.lightReverseSpin());
-		// Pneumatics
-		m_controller.povDown().onTrue(m_cannonSubsystem.charge(20));
-		m_controller.povRight().onTrue(m_cannonSubsystem.charge(40));
-		m_controller.povUp().onTrue(m_cannonSubsystem.charge(60));
+		// ---------------Cannons---------------
+		m_controller.povDown().onTrue(m_cannonSubsystem.chargeCannon(20));
+		m_controller.povRight().onTrue(m_cannonSubsystem.chargeCannon(40));
+		m_controller.povUp().onTrue(m_cannonSubsystem.chargeCannon(60));
 		m_controller.button(Button.kLeftBumper).and(m_controller.button(Button.kSquare))
 				.whileTrue(m_cannonSubsystem.fireLeftCannon());
 		m_controller.button(Button.kLeftBumper).and(m_controller.button(Button.kTriangle))
 				.whileTrue(m_cannonSubsystem.fireMiddleCannon());
 		m_controller.button(Button.kLeftBumper).and(m_controller.button(Button.kCircle))
 				.whileTrue(m_cannonSubsystem.fireRightCannon());
+
+		// ---------------Lights---------------
+		RobotModeTriggers.disabled().negate().onTrue(m_lightAndHornSubsystem.spinLightReverse());
+		m_controller.button(Button.kShare).whileTrue(m_lightAndHornSubsystem.spinLight());
+		m_controller.button(Button.kOptions).whileTrue(m_lightAndHornSubsystem.spinLightReverse());
 	}
 
 	// TODO get auto command from auto chooser
