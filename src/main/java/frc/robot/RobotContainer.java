@@ -55,6 +55,8 @@ public class RobotContainer {
 				.whileTrue(m_cannonSubsystem.fireMiddleCannon());
 		m_controller.button(Button.kLeftBumper).and(m_controller.button(Button.kCircle))
 				.whileTrue(m_cannonSubsystem.fireRightCannon());
+		m_controller.button(Button.kLeftBumper).and(m_controller.button(Button.kX))
+				.whileTrue(m_cannonSubsystem.fireAllCannons());
 
 		// ---------------Lights---------------
 		RobotModeTriggers.disabled().negate().onTrue(m_lightAndHornSubsystem.spinLightReverse());

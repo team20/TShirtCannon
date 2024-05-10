@@ -97,4 +97,16 @@ public class CannonSubsystem extends SubsystemBase {
 	public Command fireRightCannon() {
 		return runEnd(() -> m_rightCannon.set(Value.kForward), () -> m_rightCannon.set(Value.kOff));
 	}
+
+	public Command fireAllCannons() {
+		return runEnd(() -> {
+			m_leftCannon.set(Value.kForward);
+			m_middleCannon.set(Value.kForward);
+			m_rightCannon.set(Value.kForward);
+		}, () -> {
+			m_leftCannon.set(Value.kOff);
+			m_middleCannon.set(Value.kOff);
+			m_rightCannon.set(Value.kOff);
+		});
+	}
 }
