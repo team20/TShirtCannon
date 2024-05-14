@@ -21,7 +21,7 @@
 // Argument 1 = Number of pixels in NeoPixel strip
 // Argument 2 = Arduino pin number (most are valid)
 // Argument 3 = Pixel type flags, add together as needed, refer to Adafruit_NeoPixel.h
-Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_BRG + NEO_KHZ800);
+Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 /*
  * for additional flags(in the event the LEDs don't display the color you want, you
@@ -66,11 +66,9 @@ uint32_t RainbowColor[] = {
 void setup() {
 	strip.begin();
 
-	strip.setBrightness(255);  // Set BRIGHTNESS to about 1/5 (max = 255)
+	strip.setBrightness(100);  // Set BRIGHTNESS to about 1/5 (max = 255)
 
 	Serial.begin(9600);
-	Wire.begin(0x18);
-	Wire.onReceive(receiveEvent);
 }
 
 void loop() {
@@ -87,23 +85,11 @@ void loop() {
 			delay(75);
 			break;
 		case 2:  // Smooth RainbowPartyFunTime
-			strip.rainbow((65535 / (LED_COUNT / 6)) * (colorIndex % (LED_COUNT / 6)), 6);
-			break;
-		case 3:  // yellow -> Coop LED (HP Command)
-			for (int i = 0; i < LED_COUNT; i++) {
-				strip.setPixelColor(i, BlinkingLights(colorIndex, color(255, 200, 0), color(0, 0, 0)));
-			}
-			delay(150);
-			break;
-		case 4:  // purple -> Amp LED (HP Command)
-			for (int i = 0; i < LED_COUNT; i++) {
-				strip.setPixelColor(i, BlinkingLights(colorIndex, color(255, 0, 255), color(0, 0, 0)));
-			}
-			delay(100);
+			strip.rainbow((65535 / (LED_COUNT / 4)) * (colorIndex % (LED_COUNT / 4)), 5);
 			break;
 		case 5:  // Shen colors
 			for (int i = 0; i < LED_COUNT; i++) {
-				strip.setPixelColor(i, TheaterLights(colorIndex, i, color(0, 255, 0), color(255, 255, 255)));
+				strip.setPixelColor(i, TheaterLightsDouble(i + colorIndex, color(255, 255, 255), color(0, 255, 0)));
 			}
 			delay(100);
 			break;
@@ -118,24 +104,9 @@ void loop() {
 	colorIndex++;  // next frame
 }
 
-void receiveEvent(int bytes) {
-	byte x = Wire.read();
-	pattern = x;
-}
-
 void serialEvent() {
 	pattern = Serial.read();
 }
-// /**
-//  * @brief Makes LEDs cycle through the colors of the rainbow
-//  * @param x The number to control the color. Use colorIndex
-//  * to have the entire strip cycle through the rainbow, or LED number
-//  * to have the individual LEDs be different colors of the rainbow
-//  * @return The color
-//  */
-// uint32_t SuperRainbowPartyFunTime(int x) {
-// 	return RainbowColor[x % 6];
-// }
 
 /**
  * @brief Makes the LED strip display all the colors of the rainbow while the rainbow moves
@@ -155,8 +126,15 @@ uint32_t RainbowPartyFunTime(int c, int i) {
  * @param color2 The other color
  * @return The color that the LED should show
  */
-uint32_t TheaterLights(int c, int i, uint32_t color1, uint32_t color2) {  // pixel on color 1 or 2 depending on frame
-	if (i % 2 == c % 2) {
+uint32_t TheaterLights(int i, uint32_t color1, uint32_t color2) {  // pixel on color 1 or 2 depending on frame
+	if (i % 2) {
+		return color1;
+	}
+	return color2;
+}
+
+uint32_t TheaterLightsDouble(int i, uint32_t color1, uint32_t color2) {
+	if (i % 4 < 2) {
 		return color1;
 	}
 	return color2;

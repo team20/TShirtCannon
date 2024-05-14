@@ -60,8 +60,9 @@ public class RobotContainer {
 
 		// ---------------Lights---------------
 		RobotModeTriggers.disabled().negate().onTrue(m_lightAndHornSubsystem.spinLightReverse());
-		m_controller.button(Button.kShare).whileTrue(m_lightAndHornSubsystem.spinLight());
-		m_controller.button(Button.kOptions).whileTrue(m_lightAndHornSubsystem.spinLightReverse());
+		m_controller.button(Button.kShare)
+				.onTrue(m_arduinoSubsystem.ledColor(StatusCode.SMOOTH_RAINBOW_PARTY_FUN_TIME));
+		m_controller.button(Button.kOptions).onTrue(m_arduinoSubsystem.ledColor(StatusCode.SHEN_COLORS));
 	}
 
 	// TODO get auto command from auto chooser

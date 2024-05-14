@@ -26,6 +26,9 @@ Press and hold the touchpad to turn on the horn, release to turn it off.
 | Left Bumper + X                                                          | Fire all cannons         |
 | [**Horn Controls**](./src/main/java/frc/robot/RobotContainer.java#L45)   |                          |
 | Touchpad (hold)                                                          | Turn on the horn         |
+| [**LED Controls**](./src/main/java/frc/robot/RobotContainer.java#L62)    |                          |
+| Share                                                                    | RainbowPartyFunTime      |
+| Options                                                                  | Shen Lights              |
 
 ## The cannon
 
