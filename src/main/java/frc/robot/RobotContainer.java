@@ -30,12 +30,6 @@ public class RobotContainer {
 	}
 
 	private void configureButtonBindings() {
-		// -------------LED signaling-------------
-		// m_controller.povLeft().onTrue(m_arduinoSubsystem.ledColor(StatusCode.BLINKING_PURPLE));
-		// m_controller.povRight().onTrue(m_arduinoSubsystem.ledColor(StatusCode.BLINKING_YELLOW));
-		// m_controller.povUp().onTrue(m_arduinoSubsystem.ledColor(StatusCode.RAINBOW_PARTY_FUN_TIME));
-		// m_controller.povDown().onTrue(m_arduinoSubsystem.ledColor(StatusCode.DEFAULT));
-
 		// -------------Driving -------------
 		m_driveSubsystem.setDefaultCommand(m_driveSubsystem.drive(
 				() -> m_controller.getRawAxis(Axis.kLeftY),
@@ -59,7 +53,7 @@ public class RobotContainer {
 				.whileTrue(m_cannonSubsystem.fireAllCannons());
 
 		// ---------------Lights---------------
-		RobotModeTriggers.disabled().negate().onTrue(m_lightAndHornSubsystem.spinLightReverse());
+		RobotModeTriggers.disabled().negate().onTrue(m_lightAndHornSubsystem.spinLight());
 		m_controller.button(Button.kShare)
 				.onTrue(m_arduinoSubsystem.ledColor(StatusCode.SMOOTH_RAINBOW_PARTY_FUN_TIME));
 		m_controller.button(Button.kOptions).onTrue(m_arduinoSubsystem.ledColor(StatusCode.SHEN_COLORS));
