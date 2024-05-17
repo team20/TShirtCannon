@@ -81,6 +81,12 @@ public final class Constants {
 		 * pressure sensor reads 1.37 volts.
 		 */
 		public static final double kPsiPerVolt = 45 / (1.37 - 0.47);
+		public static final int kLEDCount = 10;
+		public static final int kSetCannonLEDCode = 50;
+		public static final int kResetCannonLEDCode = 51;
+		public static final int kLeftStripCode = 1;
+		public static final int kMiddleStripCode = 2;
+		public static final int kRightStripCode = 3;
 	}
 
 	public static final class LightAndHornConstants {

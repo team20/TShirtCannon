@@ -8,8 +8,10 @@ import static frc.robot.Constants.CannonConstants.*;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.I2C.Port;
+import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,6 +24,7 @@ public class CannonSubsystem extends SubsystemBase {
 	private final AnalogInput m_leftCannonPressure = new AnalogInput(1);
 	private final AnalogInput m_middleCannonPressure = new AnalogInput(2);
 	private final AnalogInput m_rightCannonPressure = new AnalogInput(3);
+	private final I2C m_leds = new I2C(Port.kMXP, 0x20);
 
 	/** Creates a new CannonSubsystem. */
 	public CannonSubsystem() {
@@ -45,6 +48,15 @@ public class CannonSubsystem extends SubsystemBase {
 		return (m_rightCannonPressure.getVoltage() - 0.47) * kPsiPerVolt;
 	}
 
+	/**
+	 * Sends a value over I2C to the Arduino.
+	 * 
+	 * @param code The value to send. This will be rounded and cast to a byte.
+	 */
+	private void sendCode(double code) {
+		m_leds.writeBulk(new byte[] { (byte) Math.round(code) });
+	}
+
 	@Override
 	public void periodic() {
 		SmartDashboard.putNumber("Left Cannon Voltage", m_leftCannonPressure.getVoltage());
@@ -63,20 +75,27 @@ public class CannonSubsystem extends SubsystemBase {
 	 */
 	public Command chargeCannon(int psi) {
 		return runEnd(() -> {
+			sendCode(kSetCannonLEDCode);
 			if (getLeftCannonPressure() < psi) {
 				m_leftCannon.set(Value.kReverse);
+				sendCode(getLeftCannonPressure() / psi * kLEDCount);
 			} else {
 				m_leftCannon.set(Value.kOff);
+				sendCode(kLEDCount);
 			}
 			if (getMiddleCannonPressure() < psi) {
+				sendCode(getMiddleCannonPressure() / psi * kLEDCount);
 				m_middleCannon.set(Value.kReverse);
 			} else {
 				m_middleCannon.set(Value.kOff);
+				sendCode(kLEDCount);
 			}
 			if (getRightCannonPressure() < psi) {
 				m_rightCannon.set(Value.kReverse);
+				sendCode(getRightCannonPressure() / psi * kLEDCount);
 			} else {
 				m_rightCannon.set(Value.kOff);
+				sendCode(kLEDCount);
 			}
 		}, () -> {
 			m_leftCannon.set(Value.kOff);
@@ -87,15 +106,27 @@ public class CannonSubsystem extends SubsystemBase {
 	}
 
 	public Command fireLeftCannon() {
-		return runEnd(() -> m_leftCannon.set(Value.kForward), () -> m_leftCannon.set(Value.kOff));
+		return runEnd(() -> m_leftCannon.set(Value.kForward), () -> {
+			m_leftCannon.set(Value.kOff);
+			sendCode(kResetCannonLEDCode);
+			sendCode(kLeftStripCode);
+		});
 	}
 
 	public Command fireMiddleCannon() {
-		return runEnd(() -> m_middleCannon.set(Value.kForward), () -> m_middleCannon.set(Value.kOff));
+		return runEnd(() -> m_middleCannon.set(Value.kForward), () -> {
+			m_middleCannon.set(Value.kOff);
+			sendCode(kResetCannonLEDCode);
+			sendCode(kMiddleStripCode);
+		});
 	}
 
 	public Command fireRightCannon() {
-		return runEnd(() -> m_rightCannon.set(Value.kForward), () -> m_rightCannon.set(Value.kOff));
+		return runEnd(() -> m_rightCannon.set(Value.kForward), () -> {
+			m_rightCannon.set(Value.kOff);
+			sendCode(kResetCannonLEDCode);
+			sendCode(kRightStripCode);
+		});
 	}
 
 	public Command fireAllCannons() {
@@ -107,6 +138,12 @@ public class CannonSubsystem extends SubsystemBase {
 			m_leftCannon.set(Value.kOff);
 			m_middleCannon.set(Value.kOff);
 			m_rightCannon.set(Value.kOff);
+			sendCode(kResetCannonLEDCode);
+			sendCode(kLeftStripCode);
+			sendCode(kResetCannonLEDCode);
+			sendCode(kMiddleStripCode);
+			sendCode(kResetCannonLEDCode);
+			sendCode(kResetCannonLEDCode);
 		});
 	}
 }

@@ -15,13 +15,19 @@
 #define LED_PIN 6
 
 // How many NeoPixels are attached to the Arduino?
-#define LED_COUNT 168
-
+#define MAIN_LOOP_LED_COUNT 168
+#define CANNON_LED_COUNT 10
+#define SIDE_LED_COUNT 40
 // Declare our NeoPixel strip object:
 // Argument 1 = Number of pixels in NeoPixel strip
 // Argument 2 = Arduino pin number (most are valid)
 // Argument 3 = Pixel type flags, add together as needed, refer to Adafruit_NeoPixel.h
-Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel leftStrip(CANNON_LED_COUNT, 11, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel middleStrip(CANNON_LED_COUNT, 5, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel rightStrip(CANNON_LED_COUNT, 12, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel mainLoop(MAIN_LOOP_LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel leftTriangle(SIDE_LED_COUNT, 3, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel rightTriangle(SIDE_LED_COUNT, 4, NEO_GRB + NEO_KHZ800);
 
 /*
  * for additional flags(in the event the LEDs don't display the color you want, you
@@ -64,14 +70,57 @@ uint32_t RainbowColor[] = {
     color(148, 0, 211)};
 
 void setup() {
-	strip.begin();
+	leftStrip.begin();
+	middleStrip.begin();
+	rightStrip.begin();
+	mainLoop.begin();
+	leftTriangle.begin();
+	rightTriangle.begin();
 
-	strip.setBrightness(100);  // Set BRIGHTNESS to about 1/5 (max = 255)
-
+	leftStrip.setBrightness(100);
+	middleStrip.setBrightness(100);
+	rightStrip.setBrightness(100);
+	mainLoop.setBrightness(100);  // Set BRIGHTNESS to about 1/5 (max = 255)
+	leftTriangle.setBrightness(100);
+	rightTriangle.setBrightness(100);
 	Serial.begin(9600);
+	Wire.begin(0x20);
+}
+
+void setCannonStrip(Adafruit_NeoPixel strip, int numLEDs) {
+	for (size_t i = 0; i < numLEDs; i++) {
+		strip.setPixelColor(i, color(255, 255, 255));
+	}
 }
 
 void loop() {
+	if (Wire.peek() == 50) {
+		if (Wire.available() >= 4) {
+			Wire.read();
+			int left = Wire.read();
+			int middle = Wire.read();
+			int right = Wire.read();
+			setCannonStrip(leftStrip, left);
+			setCannonStrip(middleStrip, middle);
+			setCannonStrip(rightStrip, right);
+		}
+	} else if (Wire.peek() == 51) {
+		if (Wire.available() >= 2) {
+			Wire.read();
+			switch (Wire.read()) {
+				case 1:
+					leftStrip.clear();
+					break;
+				case 2:
+					middleStrip.clear();
+					break;
+				case 3:
+					rightStrip.clear();
+					break;
+				default:
+			}
+		}
+	}
 	switch (pattern) {  // sets up lights to patterns
 		                // note: every function returns a color based on colorIndex, the pixel index, and optional color parameters.
 		                // the for loops set the pixels to have their corresponding colors based on the pattern function on the colorIndex frame
@@ -79,28 +128,47 @@ void loop() {
 			colorIndex = 0;
 			pattern = -1;
 		case 1:  // RainbowPartyFunTime!!
-			for (int i = 0; i < LED_COUNT; i++) {
-				strip.setPixelColor(i, RainbowPartyFunTime(colorIndex, i));
+			for (int i = 0; i < MAIN_LOOP_LED_COUNT; i++) {
+				mainLoop.setPixelColor(i, RainbowPartyFunTime(colorIndex, i));
+			}
+			for (int i = 0; i < SIDE_LED_COUNT; i++) {
+				leftTriangle.setPixelColor(i, RainbowPartyFunTime(colorIndex, i));
+				rightTriangle.setPixelColor(i, RainbowPartyFunTime(colorIndex, i));
 			}
 			delay(75);
 			break;
 		case 2:  // Smooth RainbowPartyFunTime
-			strip.rainbow((65535 / (LED_COUNT / 4)) * (colorIndex % (LED_COUNT / 4)), 5);
+			mainLoop.rainbow((65535 / (MAIN_LOOP_LED_COUNT / 4)) * (colorIndex % (MAIN_LOOP_LED_COUNT / 4)), 5);
+			leftTriangle.rainbow((65535 / (SIDE_LED_COUNT / 4)) * (colorIndex % (SIDE_LED_COUNT / 4)), 5);
+			rightTriangle.rainbow((65535 / (SIDE_LED_COUNT / 4)) * (colorIndex % (SIDE_LED_COUNT / 4)), 5);
 			break;
 		case 5:  // Shen colors
-			for (int i = 0; i < LED_COUNT; i++) {
-				strip.setPixelColor(i, TheaterLightsDouble(i + colorIndex, color(255, 255, 255), color(0, 255, 0)));
+			for (int i = 0; i < MAIN_LOOP_LED_COUNT; i++) {
+				mainLoop.setPixelColor(i, TheaterLightsDouble(i + colorIndex, color(255, 255, 255), color(0, 255, 0)));
+			}
+			for (int i = 0; i < SIDE_LED_COUNT; i++) {
+				leftTriangle.setPixelColor(i, TheaterLightsDouble(i + colorIndex, color(255, 255, 255), color(0, 255, 0)));
+				rightTriangle.setPixelColor(i, TheaterLightsDouble(i + colorIndex, color(255, 255, 255), color(0, 255, 0)));
 			}
 			delay(100);
 			break;
 		default:  // display team color
-			for (int i = 0; i < LED_COUNT; i++) {
-				strip.setPixelColor(i, teamColor);
+			for (int i = 0; i < MAIN_LOOP_LED_COUNT; i++) {
+				mainLoop.setPixelColor(i, teamColor);
+			}
+			for (int i = 0; i < SIDE_LED_COUNT; i++) {
+				leftTriangle.setPixelColor(i, teamColor);
+				rightTriangle.setPixelColor(i, teamColor);
 			}
 			delay(150);
 			break;
 	}
-	strip.show();
+	leftStrip.show();
+	middleStrip.show();
+	rightStrip.show();
+	mainLoop.show();
+	leftTriangle.show();
+	rightTriangle.show();
 	colorIndex++;  // next frame
 }
 
