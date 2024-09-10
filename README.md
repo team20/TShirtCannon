@@ -42,9 +42,9 @@ The analog pressure sensor starts at ~0.47 volts when the PSI is 0. At 45 PSI, t
 
 When the double solenoid is set to `kForward`, the cannon builds pressure. When the double solenoid is set to `kReverse`, the cannon fires.
 
-The [command](./src/main/java/frc/robot/subsystems/CannonSubsystem.java#L64) that charges all the cannons simultaneously checks if a cannon is below the target PSI. If it is, it will set the cannon's solenoid to `kReverse` and charges the cannon. If the cannon's pressure is above the target PSI, it sets the cannon to `kOff`, stopping the charge. The command runs these checks for all three cannons. The command ends when all the cannons are above the target pressure. As a backup measure, the [command will set all solenoids to `kOff`](./src/main/java/frc/robot/subsystems/CannonSubsystem.java#L85) when the command is ended. This also means if you fire a cannon early, all cannons will stop charging.
+The [command](./src/main/java/frc/robot/subsystems/CannonSubsystem.java#L80) that charges all the cannons simultaneously checks if a cannon is below the target PSI. If it is, it will set the cannon's solenoid to `kReverse` and charges the cannon. If the cannon's pressure is above the target PSI, it sets the cannon to `kOff`, stopping the charge. The command runs these checks for all three cannons. The command ends when all the cannons are above the target pressure. As a backup measure, the [command will set all solenoids to `kOff`](./src/main/java/frc/robot/subsystems/CannonSubsystem.java#L105) when the command is ended. This also means if you fire a cannon early, all cannons will stop charging.
 
-The [commands](./src/main/java/frc/robot/subsystems/CannonSubsystem.java#L89) that fire a cannon sets the solenoid to `kForward`, then sets the solenoid to `kOff`.
+The [commands](./src/main/java/frc/robot/subsystems/CannonSubsystem.java#L136) that fire a cannon sets the solenoid to `kForward`, then sets the solenoid to `kOff`.
 
 ## The horn and light
 

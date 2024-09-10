@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ArduinoSubsystem extends SubsystemBase {
-	private SerialPort m_arduino = new SerialPort(9600, Port.kUSB);
+	private SerialPort m_arduino;
 
 	/** The bytes that control the LED mode */
 	public enum StatusCode {
@@ -28,7 +28,8 @@ public class ArduinoSubsystem extends SubsystemBase {
 	}
 
 	/** Creates a new ArduinoSubsystem. */
-	public ArduinoSubsystem() {
+	public ArduinoSubsystem(SerialPort arduino) {
+		m_arduino = arduino;
 		setCode(StatusCode.SMOOTH_RAINBOW_PARTY_FUN_TIME);
 	}
 

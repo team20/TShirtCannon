@@ -4,7 +4,8 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
@@ -18,12 +19,12 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LightAndHornSubsystem;
 
 public class RobotContainer {
-	private final ArduinoSubsystem m_arduinoSubsystem = new ArduinoSubsystem();
+	private final SerialPort m_arduino = new SerialPort(9600, Port.kUSB);
+	private final ArduinoSubsystem m_arduinoSubsystem = new ArduinoSubsystem(m_arduino);
 	private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
 	private final LightAndHornSubsystem m_lightAndHornSubsystem = new LightAndHornSubsystem();
-	private final CannonSubsystem m_cannonSubsystem = new CannonSubsystem();
+	private final CannonSubsystem m_cannonSubsystem = new CannonSubsystem(m_arduino);
 	private final CommandGenericHID m_controller = new CommandGenericHID(ControllerConstants.kDriverControllerPort);
-	private final SendableChooser<Command> m_autoChooser = new SendableChooser<>();
 
 	public RobotContainer() {
 		configureButtonBindings();
@@ -61,6 +62,6 @@ public class RobotContainer {
 
 	// TODO get auto command from auto chooser
 	public Command getAutonomousCommand() {
-		return m_autoChooser.getSelected();
+		return m_cannonSubsystem.fillAllCannonLights();
 	}
 }

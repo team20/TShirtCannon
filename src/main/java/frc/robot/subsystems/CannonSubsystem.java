@@ -9,9 +9,8 @@ import static frc.robot.Constants.CannonConstants.*;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.PneumaticHub;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -24,10 +23,11 @@ public class CannonSubsystem extends SubsystemBase {
 	private final AnalogInput m_leftCannonPressure = new AnalogInput(1);
 	private final AnalogInput m_middleCannonPressure = new AnalogInput(2);
 	private final AnalogInput m_rightCannonPressure = new AnalogInput(3);
-	private final I2C m_leds = new I2C(Port.kMXP, 0x20);
+	private SerialPort m_arduino;
 
 	/** Creates a new CannonSubsystem. */
-	public CannonSubsystem() {
+	public CannonSubsystem(SerialPort arduino) {
+		m_arduino = arduino;
 	}
 
 	private double getLeftCannonPressure() {
@@ -54,7 +54,7 @@ public class CannonSubsystem extends SubsystemBase {
 	 * @param code The value to send. This will be rounded and cast to a byte.
 	 */
 	private void sendCode(double code) {
-		m_leds.writeBulk(new byte[] { (byte) Math.round(code) });
+		m_arduino.write(new byte[] { (byte) Math.round(code) }, 1);
 	}
 
 	@Override
@@ -65,6 +65,10 @@ public class CannonSubsystem extends SubsystemBase {
 		SmartDashboard.putNumber("Left Cannon Pressure", getLeftCannonPressure());
 		SmartDashboard.putNumber("Middle Cannon Pressure", getMiddleCannonPressure());
 		SmartDashboard.putNumber("Right Cannon Pressure", getRightCannonPressure());
+		var code = m_arduino.read(1);
+		if (code.length > 0) {
+			System.out.println(code[0]);
+		}
 	}
 
 	/**
@@ -143,7 +147,21 @@ public class CannonSubsystem extends SubsystemBase {
 			sendCode(kResetCannonLEDCode);
 			sendCode(kMiddleStripCode);
 			sendCode(kResetCannonLEDCode);
-			sendCode(kResetCannonLEDCode);
+			sendCode(kRightStripCode);
+		});
+	}
+
+	/**
+	 * Creates a command to make all the cannon LEDs light up.
+	 * 
+	 * @return The command.
+	 */
+	public Command fillAllCannonLights() {
+		return runOnce(() -> {
+			sendCode(kSetCannonLEDCode);
+			sendCode(kLEDCount);
+			sendCode(kLEDCount);
+			sendCode(kLEDCount);
 		});
 	}
 }

@@ -9,6 +9,7 @@
 // #7 It should tell you if it isn't but just in case make sure your libraries are downloaded and updated
 
 #include <Adafruit_NeoPixel.h>
+#include <FastLED.h>
 #include <Wire.h>
 // Which pin on the Arduino is connected to the NeoPixels?
 // On a Trinket or Gemma we suggest changing this to 1:
@@ -16,15 +17,15 @@
 
 // How many NeoPixels are attached to the Arduino?
 #define MAIN_LOOP_LED_COUNT 168
-#define CANNON_LED_COUNT 10
-#define SIDE_LED_COUNT 40
+#define CANNON_LED_COUNT 8
+#define SIDE_LED_COUNT 60
 // Declare our NeoPixel strip object:
 // Argument 1 = Number of pixels in NeoPixel strip
 // Argument 2 = Arduino pin number (most are valid)
 // Argument 3 = Pixel type flags, add together as needed, refer to Adafruit_NeoPixel.h
-Adafruit_NeoPixel leftStrip(CANNON_LED_COUNT, 11, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel middleStrip(CANNON_LED_COUNT, 5, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel rightStrip(CANNON_LED_COUNT, 12, NEO_GRB + NEO_KHZ800);
+CRGB leftStrip[CANNON_LED_COUNT];
+CRGB middleStrip[CANNON_LED_COUNT];
+CRGB rightStrip[CANNON_LED_COUNT];
 Adafruit_NeoPixel mainLoop(MAIN_LOOP_LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel leftTriangle(SIDE_LED_COUNT, 3, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel rightTriangle(SIDE_LED_COUNT, 4, NEO_GRB + NEO_KHZ800);
@@ -70,54 +71,59 @@ uint32_t RainbowColor[] = {
     color(148, 0, 211)};
 
 void setup() {
-	leftStrip.begin();
-	middleStrip.begin();
-	rightStrip.begin();
+	delay(3000);  // sanity delay
+	FastLED.addLeds<WS2811, 11, GRB>(leftStrip, CANNON_LED_COUNT);
+	FastLED.addLeds<WS2811, 5, GRB>(middleStrip, CANNON_LED_COUNT);
+	FastLED.addLeds<WS2811, 12, GRB>(rightStrip, CANNON_LED_COUNT);
+	FastLED.setBrightness(200);
 	mainLoop.begin();
 	leftTriangle.begin();
 	rightTriangle.begin();
 
-	leftStrip.setBrightness(100);
-	middleStrip.setBrightness(100);
-	rightStrip.setBrightness(100);
 	mainLoop.setBrightness(100);  // Set BRIGHTNESS to about 1/5 (max = 255)
 	leftTriangle.setBrightness(100);
 	rightTriangle.setBrightness(100);
 	Serial.begin(9600);
-	Wire.begin(0x20);
-}
-
-void setCannonStrip(Adafruit_NeoPixel strip, int numLEDs) {
-	for (size_t i = 0; i < numLEDs; i++) {
-		strip.setPixelColor(i, color(255, 255, 255));
-	}
 }
 
 void loop() {
-	if (Wire.peek() == 50) {
-		if (Wire.available() >= 4) {
-			Wire.read();
-			int left = Wire.read();
-			int middle = Wire.read();
-			int right = Wire.read();
-			setCannonStrip(leftStrip, left);
-			setCannonStrip(middleStrip, middle);
-			setCannonStrip(rightStrip, right);
+	if (Serial.peek() == 50) {
+		if (Serial.available() >= 4) {
+			Serial.read();
+			int left = Serial.read();
+			int middle = Serial.read();
+			int right = Serial.read();
+			for (int i = 0; i < left; i++) {
+				leftStrip[i] = CRGB::CRGB(255, 0, 0);
+			}
+			for (int i = 0; i < middle; i++) {
+				middleStrip[i] = CRGB::CRGB(255, 0, 0);
+			}
+			for (int i = 0; i < right; i++) {
+				rightStrip[i] = CRGB::CRGB(255, 0, 0);
+			}
 		}
-	} else if (Wire.peek() == 51) {
-		if (Wire.available() >= 2) {
-			Wire.read();
-			switch (Wire.read()) {
+	} else if (Serial.peek() == 51) {
+		if (Serial.available() >= 2) {
+			Serial.read();
+			switch (Serial.read()) {
 				case 1:
-					leftStrip.clear();
+					for (int i = 0; i < CANNON_LED_COUNT; i++) {
+						leftStrip[i] = CRGB::CRGB(0, 0, 0);
+					}
 					break;
 				case 2:
-					middleStrip.clear();
+					for (int i = 0; i < CANNON_LED_COUNT; i++) {
+						middleStrip[i] = CRGB::CRGB(0, 0, 0);
+					}
 					break;
 				case 3:
-					rightStrip.clear();
+					for (int i = 0; i < CANNON_LED_COUNT; i++) {
+						rightStrip[i] = CRGB::CRGB(0, 0, 0);
+					}
 					break;
 				default:
+					break;
 			}
 		}
 	}
@@ -163,19 +169,13 @@ void loop() {
 			delay(150);
 			break;
 	}
-	leftStrip.show();
-	middleStrip.show();
-	rightStrip.show();
 	mainLoop.show();
 	leftTriangle.show();
 	rightTriangle.show();
+	FastLED.show();
+	FastLED.delay(10);
 	colorIndex++;  // next frame
 }
-
-void serialEvent() {
-	pattern = Serial.read();
-}
-
 /**
  * @brief Makes the LED strip display all the colors of the rainbow while the rainbow moves
  * @param c The colorIndex
