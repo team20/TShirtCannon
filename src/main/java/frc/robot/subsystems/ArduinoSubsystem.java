@@ -33,7 +33,7 @@ public class ArduinoSubsystem extends SubsystemBase {
 		setCode(StatusCode.SMOOTH_RAINBOW_PARTY_FUN_TIME);
 	}
 
-	public void setCode(StatusCode code) {
+	private void setCode(StatusCode code) {
 		m_arduino.write(new byte[] { code.code }, 1);
 	}
 

@@ -16,7 +16,7 @@ Press and hold the touchpad to turn on the horn, release to turn it off.
 | Left Trigger                                                             | Spin left                |
 | Right Trigger                                                            | Spin right               |
 | Left Joystick                                                            | Drive forward/backward   |
-| [**Cannon Controls**](./src/main/java/frc/robot/RobotContainer.java#L42) |                          |
+| [**Cannon Controls**](./src/main/java/frc/robot/RobotContainer.java#L40) |                          |
 | DPad Down                                                                | Charge cannons to 20 PSI |
 | DPad Right                                                               | Charge cannons to 40 PSI |
 | DPad Up                                                                  | Charge cannons to 60 PSI |
@@ -24,9 +24,9 @@ Press and hold the touchpad to turn on the horn, release to turn it off.
 | Left Bumper + Triangle                                                   | Fire middle cannon       |
 | Left Bumper + Circle                                                     | Fire right cannon        |
 | Left Bumper + X                                                          | Fire all cannons         |
-| [**Horn Controls**](./src/main/java/frc/robot/RobotContainer.java#L40)   |                          |
+| [**Horn Controls**](./src/main/java/frc/robot/RobotContainer.java#L37)   |                          |
 | Touchpad (hold)                                                          | Turn on the horn         |
-| [**LED Controls**](./src/main/java/frc/robot/RobotContainer.java#L57)    |                          |
+| [**LED Controls**](./src/main/java/frc/robot/RobotContainer.java#L49)    |                          |
 | Share                                                                    | RainbowPartyFunTime      |
 | Options                                                                  | Shen Lights              |
 
@@ -50,6 +50,6 @@ The [commands](./src/main/java/frc/robot/subsystems/CannonSubsystem.java#L136) t
 
 The horn and light are each controlled by a [VEX Relay](https://web.archive.org/web/20030419143006/http://www.innovationfirst.com/FirstRobotics/pdfs/SpikeBLUEUsersManual.pdf) (connected to the Relay ports).
 
-The horn is honked by setting the relay to `kOn`. The [command](./src/main/java/frc/robot/subsystems/LightAndHornSubsystem.java#L22) that does this then also sets the relay to `kOff` to turn off the horn when the command ends. The [button binding](./src/main/java/frc/robot/RobotContainer.java#L40) is hold to run, so the command ends and the horn turns off when the button is released.
+The horn is honked by setting the relay to `kOn`. The [command](./src/main/java/frc/robot/subsystems/LightAndHornSubsystem.java#L22) that does this then also sets the relay to `kOff` to turn off the horn when the command ends. The [button binding](./src/main/java/frc/robot/RobotContainer.java#L38) is hold to run, so the command ends and the horn turns off when the button is released.
 
 The light can be turned on by setting the relay to either `kForward` or `kReverse`, which represent different directions that the light can spin. `kForward` spins the light clockwise, `kReverse` spins the light counterclockwise.

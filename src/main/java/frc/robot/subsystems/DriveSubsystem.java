@@ -30,12 +30,12 @@ public class DriveSubsystem extends SubsystemBase {
 		m_backRight.configPeakCurrentLimit(DriveConstants.kPeakCurrentLimit);
 	}
 
-	public void arcadeDrive(double straight, double left, double right) {
+	private void arcadeDrive(double straight, double left, double right) {
 		tankDrive(DriveConstants.kSpeedLimitFactor * (straight - left + right),
 				DriveConstants.kSpeedLimitFactor * (straight + left - right));
 	}
 
-	public void arcadeDrive(double straight, double turn) {
+	private void arcadeDrive(double straight, double turn) {
 		tankDrive(DriveConstants.kSpeedLimitFactor * (straight - turn),
 				DriveConstants.kSpeedLimitFactor * (straight + turn));
 	}
@@ -44,7 +44,7 @@ public class DriveSubsystem extends SubsystemBase {
 	 * @param leftSpeed  Left motors percent output
 	 * @param rightSpeed Right motors percent output
 	 */
-	public void tankDrive(double leftSpeed, double rightSpeed) {
+	private void tankDrive(double leftSpeed, double rightSpeed) {
 		// TODO only set front? back should follow
 		m_frontLeft.set(ControlMode.PercentOutput, leftSpeed);
 		m_frontRight.set(ControlMode.PercentOutput, rightSpeed);
