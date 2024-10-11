@@ -65,10 +65,6 @@ public class CannonSubsystem extends SubsystemBase {
 		SmartDashboard.putNumber("Left Cannon Pressure", getLeftCannonPressure());
 		SmartDashboard.putNumber("Middle Cannon Pressure", getMiddleCannonPressure());
 		SmartDashboard.putNumber("Right Cannon Pressure", getRightCannonPressure());
-		var code = m_arduino.read(1);
-		if (code.length > 0) {
-			System.out.println(code[0]);
-		}
 	}
 
 	/**
