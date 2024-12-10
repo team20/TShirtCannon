@@ -1,0 +1,78 @@
+{
+  "version": 1.0,
+  "grid_size": 150,
+  "tabs": [
+    {
+      "name": "Teleoperated",
+      "grid_layout": {
+        "layouts": [
+          {
+            "title": "Cannon Pressures",
+            "x": 450.0,
+            "y": 150.0,
+            "width": 600.0,
+            "height": 450.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "High Pressure",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 150.0,
+                "height": 150.0,
+                "type": "Number Slider",
+                "properties": {
+                  "topic": "/SmartDashboard/CannonSubsystem/High Pressure",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "min_value": 5.0,
+                  "max_value": 65.0,
+                  "divisions": 11,
+                  "update_continuously": false
+                }
+              },
+              {
+                "title": "Medium Pressure",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 150.0,
+                "height": 150.0,
+                "type": "Number Slider",
+                "properties": {
+                  "topic": "/SmartDashboard/CannonSubsystem/Medium Pressure",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "min_value": 5.0,
+                  "max_value": 65.0,
+                  "divisions": 11,
+                  "update_continuously": false
+                }
+              },
+              {
+                "title": "Low Pressure",
+                "x": 750.0,
+                "y": 450.0,
+                "width": 150.0,
+                "height": 150.0,
+                "type": "Number Slider",
+                "properties": {
+                  "topic": "/SmartDashboard/CannonSubsystem/Low Pressure",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "min_value": 5.0,
+                  "max_value": 65.0,
+                  "divisions": 11,
+                  "update_continuously": false
+                }
+              }
+            ]
+          }
+        ],
+        "containers": []
+      }
+    }
+  ]
+}

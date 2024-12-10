@@ -150,11 +150,11 @@ void loop() {
 			break;
 		case 5:  // Shen colors
 			for (int i = 0; i < MAIN_LOOP_LED_COUNT; i++) {
-				mainLoop.setPixelColor(i, TheaterLightsDouble(i + colorIndex, color(255, 255, 255), color(0, 255, 0)));
+				mainLoop.setPixelColor(i, TheaterLightsDouble(i + colorIndex, color(0, 127, 0), color(0, 255, 0)));
 			}
 			for (int i = 0; i < SIDE_LED_COUNT; i++) {
-				leftTriangle.setPixelColor(i, TheaterLightsDouble(i + colorIndex, color(255, 255, 255), color(0, 255, 0)));
-				rightTriangle.setPixelColor(i, TheaterLightsDouble(i + colorIndex, color(255, 255, 255), color(0, 255, 0)));
+				leftTriangle.setPixelColor(i, TheaterLightsDouble(i + colorIndex, color(0, 127, 0), color(0, 255, 0)));
+				rightTriangle.setPixelColor(i, TheaterLightsDouble(i + colorIndex, color(0, 127, 0), color(0, 255, 0)));
 			}
 			delay(100);
 			break;

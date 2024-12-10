@@ -6,6 +6,9 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.CannonConstants.*;
 
+import java.util.function.DoubleSupplier;
+
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -23,6 +26,9 @@ public class CannonSubsystem extends SubsystemBase {
 	private final AnalogInput m_leftCannonPressure = new AnalogInput(1);
 	private final AnalogInput m_middleCannonPressure = new AnalogInput(2);
 	private final AnalogInput m_rightCannonPressure = new AnalogInput(3);
+	private double m_lowPressure = 5;
+	private double m_mediumPressure = 7.5;
+	private double m_highPressure = 10;
 	private SerialPort m_arduino;
 
 	/** Creates a new CannonSubsystem. */
@@ -70,29 +76,29 @@ public class CannonSubsystem extends SubsystemBase {
 	/**
 	 * Creates a command to charge the all the cannons to the target PSI.
 	 * 
-	 * @param psi The target PSI.
+	 * @param psi A supplier for the target PSI.
 	 * @return The command.
 	 */
-	public Command chargeCannon(int psi) {
+	public Command chargeCannon(DoubleSupplier psi) {
 		return runEnd(() -> {
 			sendCode(kSetCannonLEDCode);
-			if (getLeftCannonPressure() < psi) {
+			if (getLeftCannonPressure() < psi.getAsDouble()) {
 				m_leftCannon.set(Value.kReverse);
-				sendCode(getLeftCannonPressure() / psi * kLEDCount);
+				sendCode(getLeftCannonPressure() / psi.getAsDouble() * kLEDCount);
 			} else {
 				m_leftCannon.set(Value.kOff);
 				sendCode(kLEDCount);
 			}
-			if (getMiddleCannonPressure() < psi) {
-				sendCode(getMiddleCannonPressure() / psi * kLEDCount);
+			if (getMiddleCannonPressure() < psi.getAsDouble()) {
+				sendCode(getMiddleCannonPressure() / psi.getAsDouble() * kLEDCount);
 				m_middleCannon.set(Value.kReverse);
 			} else {
 				m_middleCannon.set(Value.kOff);
 				sendCode(kLEDCount);
 			}
-			if (getRightCannonPressure() < psi) {
+			if (getRightCannonPressure() < psi.getAsDouble()) {
 				m_rightCannon.set(Value.kReverse);
-				sendCode(getRightCannonPressure() / psi * kLEDCount);
+				sendCode(getRightCannonPressure() / psi.getAsDouble() * kLEDCount);
 			} else {
 				m_rightCannon.set(Value.kOff);
 				sendCode(kLEDCount);
@@ -101,8 +107,48 @@ public class CannonSubsystem extends SubsystemBase {
 			m_leftCannon.set(Value.kOff);
 			m_middleCannon.set(Value.kOff);
 			m_rightCannon.set(Value.kOff);
-		}).until(() -> getLeftCannonPressure() >= psi && getMiddleCannonPressure() >= psi
-				&& getRightCannonPressure() >= psi);
+		}).until(
+				() -> getLeftCannonPressure() >= psi.getAsDouble() && getMiddleCannonPressure() >= psi.getAsDouble()
+						&& getRightCannonPressure() >= psi.getAsDouble());
+	}
+
+	/**
+	 * Creates a command to charge the all the cannons to the target PSI.
+	 * 
+	 * @param psi The target PSI.
+	 * @return The command.
+	 */
+	public Command chargeCannon(double psi) {
+		return chargeCannon(() -> psi);
+	}
+
+	/**
+	 * Creates a command to charge the all the cannons to the selected low pressure.
+	 * 
+	 * @return The command.
+	 */
+	public Command chargeCannonsLow() {
+		return chargeCannon(() -> m_lowPressure);
+	}
+
+	/**
+	 * Creates a command to charge the all the cannons to the selected medium
+	 * pressure.
+	 * 
+	 * @return The command.
+	 */
+	public Command chargeCannonsMedium() {
+		return chargeCannon(() -> m_mediumPressure);
+	}
+
+	/**
+	 * Creates a command to charge the all the cannons to the selected high
+	 * pressure.
+	 * 
+	 * @return The command.
+	 */
+	public Command chargeCannonsHigh() {
+		return chargeCannon(() -> m_highPressure);
 	}
 
 	public Command fireLeftCannon() {
@@ -158,6 +204,20 @@ public class CannonSubsystem extends SubsystemBase {
 			sendCode(kLEDCount);
 			sendCode(kLEDCount);
 			sendCode(kLEDCount);
+		});
+	}
+
+	@Override
+	public void initSendable(SendableBuilder builder) {
+		super.initSendable(builder);
+		builder.addDoubleProperty("Low Pressure", () -> m_lowPressure, psi -> {
+			m_lowPressure = psi;
+		});
+		builder.addDoubleProperty("Medium Pressure", () -> m_mediumPressure, psi -> {
+			m_mediumPressure = psi;
+		});
+		builder.addDoubleProperty("High Pressure", () -> m_highPressure, psi -> {
+			m_highPressure = psi;
 		});
 	}
 }

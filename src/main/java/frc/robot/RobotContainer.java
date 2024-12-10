@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.SerialPort.Port;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
@@ -27,6 +28,7 @@ public class RobotContainer {
 
 	public RobotContainer() {
 		configureButtonBindings();
+		SmartDashboard.putData(m_cannonSubsystem);
 	}
 
 	private void configureButtonBindings() {
@@ -38,9 +40,9 @@ public class RobotContainer {
 		m_controller.touchpad().whileTrue(m_lightAndHornSubsystem.horn());
 
 		// ---------------Cannons---------------
-		m_controller.povDown().onTrue(m_cannonSubsystem.chargeCannon(20));
-		m_controller.povRight().onTrue(m_cannonSubsystem.chargeCannon(40));
-		m_controller.povUp().onTrue(m_cannonSubsystem.chargeCannon(60));
+		m_controller.povDown().onTrue(m_cannonSubsystem.chargeCannonsLow());
+		m_controller.povRight().onTrue(m_cannonSubsystem.chargeCannonsMedium());
+		m_controller.povUp().onTrue(m_cannonSubsystem.chargeCannonsHigh());
 		m_controller.L1().and(m_controller.square()).whileTrue(m_cannonSubsystem.fireLeftCannon());
 		m_controller.L1().and(m_controller.triangle()).whileTrue(m_cannonSubsystem.fireMiddleCannon());
 		m_controller.L1().and(m_controller.circle()).whileTrue(m_cannonSubsystem.fireRightCannon());
